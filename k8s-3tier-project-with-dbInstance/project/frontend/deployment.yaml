@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: frontend-app
-        image: sameerpatlekar/frontend
+        image: sameerpatlekar/rds-data
         ports:
         - name: tomcat
           containerPort: 8080
