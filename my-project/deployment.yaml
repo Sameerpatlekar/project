@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tomcat-deployment
+  namespace: backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: tomcat
+  template:
+    metadata:
+      labels:
+        app: tomcat
+    spec:
+      containers:
+      - name: tomcat
+        image: tomcat:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DATABASE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: backend-config
+              key: database.url
+        - name: DATABASE_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: backend-config
+              key: database.username
+        - name: DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: backend-secret
+              key: database.password
+        volumeMounts:
+        - name: config-volume
+          mountPath: /usr/local/tomcat/conf/context.xml
+          subPath: context.xml
+        volumeMounts:
+        - name: mysql-connector-volume
+          mountPath: /usr/local/tomcat/lib/mysql-connector.jar
+          subPath: mysql-connector.jar
+        volumeMounts:
+        - name: mysql-connector-volume
+          mountPath: /usr/local/tomcat/webapps/student.war
+          subPath: student.war
+      volumes:
+      - name: mysql-connector-volume
+        persistentVolumeClaim:
+          claimName: mysql-connector-pvc
+      volumes:
+      - name: config-volume
+        configMap:
+          name: backend-config
+          items:
+          - key: context.xml
+            path: context.xml
