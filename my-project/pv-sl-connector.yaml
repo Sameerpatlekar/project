@@ -2,6 +2,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: mysql-connector-pv
+  namespace: backend
 spec:
   capacity:
     storage: 100Mi
