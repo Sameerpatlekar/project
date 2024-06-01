@@ -42,7 +42,7 @@ spec:
           mountPath: /usr/local/tomcat/lib/mysql-connector.jar
           subPath: mysql-connector.jar
         - name: webapps-volume
-          mountPath: /usr/local/tomcat/webapps/student.war
+          mountPath: /usr/local/tomcat/webapps/
           subPath: student.war
       volumes:
       - name: mysql-connector-volume
