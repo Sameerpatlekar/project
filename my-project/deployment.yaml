@@ -51,7 +51,8 @@ spec:
 apiVersion: v1 
 kind: Service 
 metadata: 
-  name: frontend-service
+  name: my-service
+  namespace: backend
 spec: 
   selector: 
     app: tomcat
