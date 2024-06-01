@@ -39,10 +39,10 @@ spec:
           mountPath: /usr/local/tomcat/conf/context.xml
           subPath: context.xml
         - name: mysql-connector-volume
-          mountPath: /usr/local/tomcat/lib
+          mountPath: /usr/local/tomcat/lib/
           subPath: sql-connector
         - name: webapps-volume
-          mountPath: /usr/local/tomcat/webapps
+          mountPath: /usr/local/tomcat/webapps/
           subPath: webapps
       volumes:
       - name: mysql-connector-volume
