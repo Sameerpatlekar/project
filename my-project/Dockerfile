@@ -15,7 +15,7 @@ RUN wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.89/bin/apache-tomcat-9.0.
     && rm apache-tomcat-9.0.89.tar.gz
 
 ADD https://piyubucket.s3.amazonaws.com/student.war $CATALINA_HOME/webapps/
-ADD  https://piyubucket.s3.amazonaws.com/mysql-connector.jar $CATALINA_HOME/lib
+ADD https://piyubucket.s3.amazonaws.com/mysql-connector.jar $CATALINA_HOME/lib
 # Expose the port Tomcat is running on
 EXPOSE 8080
 
