@@ -38,20 +38,6 @@ spec:
         - name: config-volume
           mountPath: /usr/local/tomcat/conf/context.xml
           subPath: context.xml
-        volumeMounts:
-        - name: mysql-connector-volume
-          mountPath: /usr/local/tomcat/lib/mysql-connector.jar
-          subPath: mysql-connector.jar
-        - name: webapps-volume
-          mountPath: /usr/local/tomcat/webapps/student.war
-          subPath: student.war
-      volumes:
-      - name: mysql-connector-volume
-        persistentVolumeClaim:
-          claimName: mysql-connector-pvc
-      - name: webapps-volume
-        persistentVolumeClaim:
-          claimName: webapps-pvc
       volumes:
       - name: config-volume
         configMap:
@@ -59,3 +45,4 @@ spec:
           items:
           - key: context.xml
             path: context.xml
+   
