@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: tomcat
-        image: sameerpatlekar/tomcat-java
+        image: sameerpatlekar/tomcat-app
         ports:
         - containerPort: 8080
         env:
