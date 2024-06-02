@@ -39,7 +39,7 @@ spec:
           mountPath: /usr/local/tomcat/conf/context.xml
           subPath: context.xml
         - name: app-code
-          mountPath: /usr/local/tomcat/webapps
+          mountPath: /usr/local/tomcat/webapps/student.war
       volumes:
       - name: config-volume
         configMap:
