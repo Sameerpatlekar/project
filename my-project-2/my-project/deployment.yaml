@@ -40,7 +40,7 @@ spec:
           subPath: context.xml
         - name: app-code
           mountPath: /usr/local/tomcat/webapps/student.war
-          subPath: student.war
+          subPath: /home/sameer/files/code
         
       volumes:
       - name: config-volume
