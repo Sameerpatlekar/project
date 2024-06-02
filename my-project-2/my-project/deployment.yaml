@@ -39,7 +39,8 @@ spec:
           mountPath: /usr/local/tomcat/conf/context.xml
           subPath: context.xml
         - name: app-code
-          mountPath: /usr/local/tomcat/webapps
+          mountPath: /usr/local/tomcat/webapps/sameer.txt
+          subPath: sameer.txt
       volumes:
       - name: config-volume
         configMap:
