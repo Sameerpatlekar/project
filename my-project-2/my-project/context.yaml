@@ -12,3 +12,6 @@ data:
                   driverClassName="com.mysql.cj.jdbc.Driver"
                   url="${DATABASE_URL}"/>
     </Context>
+
+  mysql-connector.jar:
+      https://s3-us-west-2.amazonaws.com/studentapi-cit/mysql-connector.jar

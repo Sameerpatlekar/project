@@ -5,4 +5,4 @@ metadata:
   namespace: backend
 data:
   database.url: jdbc:mysql://localhost:3306/studentapp
-  database.username: root
+  database.username: root 

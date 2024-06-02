@@ -33,31 +33,33 @@ spec:
           valueFrom:
             secretKeyRef:
               name: backend-secret
-              key: database.password
+              key: database.password  
         volumeMounts:
         - name: config-volume
           mountPath: /usr/local/tomcat/conf/context.xml
           subPath: context.xml
-        - name: mysql-connector-volume
-          mountPath: /usr/local/tomcat/lib/
+        - name: connector-link
+          mountPath: /usr/local/tomcat/lib/sql-connector.jar
           subPath: mysql-connector.jar
-        - name: webapps-volume
-          mountPath: /usr/local/tomcat/webapps/
-          subPath: student.war
+        - name: app-code
+          mountPath: /usr/local/tomcat/webapps
+        
       volumes:
-      - name: mysql-connector-volume
-        persistentVolumeClaim:
-          claimName: mysql-connector-pvc
-      - name: webapps-volume
-        persistentVolumeClaim:
-          claimName: webapps-pvc
       - name: config-volume
         configMap:
           name: backend-config
           items:
           - key: context.xml
             path: context.xml
-   
+      - name: connector-link
+        configMap:
+          name: backend-config
+          items:
+          - key: mysql-connector.jar
+            path: mysql-connector.jar
+      - name: app-code
+        persistentVolumeClaim:
+          claimName: webapps-pvc   
 ---
 
 apiVersion: v1 
