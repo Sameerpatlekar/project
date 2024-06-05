@@ -5,7 +5,7 @@ metadata:
   namespace: backend
 spec:
   accessModes:
-    - ReadWriteOnce
+    - ReadWriteOnc
   resources:
     requests:
-      storage: 100Mi
+      storage: 50Mi
