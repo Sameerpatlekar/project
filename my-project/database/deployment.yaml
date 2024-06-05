@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deployment
+  namespace : backend
+spec:
+  selector:
+    matchLabels:
+      app: mysql
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      volumes:
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: pvc-mysql
+        - name: initdb
+          configMap:
+            name: mysql-initdb-config
+      initContainers:
+        - name: init-mysql-db
+          image: mysql:5.7
+          command: ['sh', '-c', 'cat /docker-entrypoint-initdb.d/init.sql | mysql -u"$DATABASE_USERNAME" -p"$DATABASE_PASSWORD"']
+          env:
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: database.password
+            - name: DATABASE_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: my-config
+                  key: database.username
+          volumeMounts:
+            - name: initdb
+              mountPath: /docker-entrypoint-initdb.d
+      containers:
+        - name: mysql
+          image: mysql:5.7
+          env:
+            - name: DATABASE_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: my-config
+                  key: database.username
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: database.password
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - mountPath: /var/lib/mysql
+              name: mysql-persistent-storage
