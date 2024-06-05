@@ -36,10 +36,8 @@ spec:
                   name: my-config
                   key: database.username
           volumeMounts:
-            - name: my-config
-              mountPath: /docker-entrypoint-initdb.d/init.sql
-              subPath: init.sql
-          
+            - name: mysql-initdb-config
+              mountPath: /docker-entrypoint-initdb.d        
       containers:
         - name: mysql
           image: mysql
