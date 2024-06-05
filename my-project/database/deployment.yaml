@@ -22,7 +22,7 @@ spec:
             name: mysql-initdb-config
       initContainers:
         - name: init-mysql-db
-          image: mysql:5.7
+          image: mysql
           command: ['sh', '-c', 'cat /docker-entrypoint-initdb.d/init.sql | mysql -u"$DATABASE_USERNAME" -p"$DATABASE_PASSWORD"']
           env:
             - name: DATABASE_PASSWORD
@@ -36,11 +36,12 @@ spec:
                   name: my-config
                   key: database.username
           volumeMounts:
-            - name: initdb
+            - name: my-config
               mountPath: /docker-entrypoint-initdb.d
+          
       containers:
         - name: mysql
-          image: mysql:5.7
+          image: mysql
           env:
             - name: DATABASE_USERNAME
               valueFrom:
