@@ -25,7 +25,7 @@ spec:
           command: ['sh', '-c', 'cat /docker-entrypoint-initdb.d/init.sql | mysql -uroot -p"$MYSQL_ROOT_PASSWORD"']
           env:
             - name: MYSQL_ROOT_PASSWORD
-              value: "yourpassword"  # Ensure this matches with the main container
+              value: "1234"  # Ensure this matches with the main container
           volumeMounts:
             - name: initdb
               mountPath: /docker-entrypoint-initdb.d
@@ -34,7 +34,7 @@ spec:
           image: mysql:5.7
           env:
             - name: MYSQL_ROOT_PASSWORD
-              value: "yourpassword"
+              value: "1234"
           ports:
             - containerPort: 3306
           volumeMounts:
