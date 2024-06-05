@@ -20,6 +20,9 @@ spec:
         - name: initdb
           configMap:
             name: my-config
+            items:
+              - key: init.sql
+                path: init.sql
       initContainers:
         - name: init-mysql-db
           image: mysql:5.7
