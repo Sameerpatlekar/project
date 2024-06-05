@@ -19,7 +19,7 @@ spec:
             claimName: pvc-mysql
         - name: initdb
           configMap:
-            name: mysql-initdb-config
+            name: my-config
       initContainers:
         - name: init-mysql-db
           image: mysql
@@ -36,8 +36,8 @@ spec:
                   name: my-config
                   key: database.username
           volumeMounts:
-            - name: mysql-initdb-config
-              mountPath: /docker-entrypoint-initdb.d        
+            - name: initdb
+              mountPath: /docker-entrypoint-initdb.d
       containers:
         - name: mysql
           image: mysql

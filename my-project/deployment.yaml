@@ -35,13 +35,13 @@ spec:
               name: backend-secret
               key: database.password
         volumeMounts:
-        - name: my-config
+        - name: config-volume
           mountPath: /usr/local/tomcat/conf/context.xml
           subPath: context.xml
       volumes:
       - name: config-volume
         configMap:
-          name: backend-config
+          name: my-config
           items:
           - key: context.xml
             path: context.xml
