@@ -23,7 +23,7 @@ spec:
       initContainers:
         - name: init-mysql-db
           image: mysql:5.7
-          command: ['sh', '-c', 'cat /docker-entrypoint-initdb.d/init.sql | mysql -u"$DATABASE_USERNAME" -p"$DATABASE_PASSWORD"']
+          command: ['sh', '-c', 'cat /docker-entrypoint-initdb.d/init.sql | mysql -u"root" -p"1234"']
           env:
             - name: DATABASE_PASSWORD
               valueFrom:
