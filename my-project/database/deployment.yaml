@@ -26,7 +26,7 @@ spec:
       initContainers:
         - name: init-mysql-db
           image: mysql:5.7
-          command: ['sh', '-c', 'cat /docker-entrypoint-initdb.d/init.sql | mysql -u"$DATABASE_USERNAME" -p"$DATABASE_PASSWORD"']
+          command: ['sh', '-c', 'until mysql -h localhost -u"$DATABASE_USERNAME" -p"$DATABASE_PASSWORD" -e "SELECT 1" > /dev/null 2>&1; do echo "Waiting for MySQL..."; sleep 10; done; cat /docker-entrypoint-initdb.d/init.sql | mysql -h localhost -u"$DATABASE_USERNAME" -p"$DATABASE_PASSWORD"']
           env:
             - name: DATABASE_PASSWORD
               valueFrom:
