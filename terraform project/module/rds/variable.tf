@@ -38,5 +38,5 @@ variable "db_password" {
 
 variable "db_name" {
   description = "The database name"
-  default     = "my-rds"
+  default     = "myrds"
 }
