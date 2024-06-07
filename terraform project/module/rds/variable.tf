@@ -27,13 +27,13 @@ variable "private_key_path" {
 
 variable "db_username" {
   description = "The database admin username"
-  default = admin
+  default = "admin"
 }
 
 variable "db_password" {
   description = "The database admin password"
   sensitive   = true
-  default = admin123
+  default = "admin123"
 }
 
 variable "db_name" {
