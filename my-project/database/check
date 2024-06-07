@@ -1,0 +1,19 @@
+initContainers:
+        - name: init-mysql-db
+          image: mysql:5.7
+          command: ['sh', '-c', 'until mysql -h localhost -u"$DATABASE_USERNAME" -p"$DATABASE_PASSWORD" -e "SELECT 1" > /dev/null 2>&1; do echo "Waiting for MySQL..."; sleep 1; done; cat /docker-entrypoint-initdb.d/init.sql | mysql -h localhost -u"$DATABASE_USERNAME" -p"$DATABASE_PASSWORD"']
+          env:
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: backend-secret
+                  key: database.password
+            - name: DATABASE_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: my-config
+                  key: database.username
+          volumeMounts:
+            - name: initdb
+              mountPath: /docker-entrypoint-initdb.d/init.sql
+              subPath: init.sql
