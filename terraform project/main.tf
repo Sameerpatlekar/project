@@ -1,5 +1,6 @@
 provider "aws" {
   region     = "us-east-1"
+
 }
 
 resource "aws_security_group" "example" {
@@ -59,3 +60,4 @@ resource "aws_instance" "ec2" {
   instance_type          = "t2.micro"
   key_name               = "ec2-key"
   vpc_security_group_ids = [aws_security_group.example.id]
+}
