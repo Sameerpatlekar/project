@@ -18,7 +18,7 @@ variable "db_allocated_storage" {
 }
 
 variable "db_instance_class" {
-  default = "db.t2.micro"
+  default = "db.t3.micro"
 }
 
 variable "aws_region" {
