@@ -42,7 +42,7 @@ resource "aws_security_group" "sg" {
 resource "null_resource" "run_sql" {
   provisioner "local-exec" {
     command = <<EOT
-      mysql -h ${aws_db_instance.rds.endpoint} -u ${var.db_username} -p${var.db_password} -e "
+      mysql -h ${aws_db_instance.rds.endpoint} --port 3306 -u ${var.db_username} -p${var.db_password} -e "
 CREATE DATABASE IF NOT EXISTS studentapp;
 USE studentapp;
 
