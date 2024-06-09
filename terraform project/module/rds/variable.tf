@@ -1,7 +1,7 @@
 # variables.tf
 
 variable "db_name" {
-  default = "myrdsinstance"
+  default = "studentapp"
 }
 
 variable "db_username" {
