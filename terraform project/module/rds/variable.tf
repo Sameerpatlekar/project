@@ -1,7 +1,7 @@
 # variables.tf
 
 variable "db_name" {
-  default = "my-database"
+  default = "database"
 }
 
 variable "db_username" {
