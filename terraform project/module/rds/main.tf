@@ -42,7 +42,20 @@ resource "aws_security_group" "sg" {
 resource "null_resource" "run_sql" {
   provisioner "local-exec" {
     command = <<EOT
-      mysql -h ${aws_db_instance.rds.endpoint} -P 3306 -u ${var.db_username} -p${var.db_password} ${var.db_name} < /home/ec2-user/project/terraform project/module/rds/init.sql
+      mysql -h ${aws_db_instance.rds.endpoint} -u ${var.db_username} -p${var.db_password} -e "
+CREATE DATABASE IF NOT EXISTS studentapp;
+USE studentapp;
+
+CREATE TABLE IF NOT EXISTS students (
+	    student_id INT NOT NULL AUTO_INCREMENT,
+	    student_name VARCHAR(100) NOT NULL,
+	    student_addr VARCHAR(100) NOT NULL,
+	    student_age VARCHAR(3) NOT NULL,
+	    student_qual VARCHAR(20) NOT NULL,
+	    student_percent VARCHAR(10) NOT NULL,
+	    student_year_passed VARCHAR(10) NOT NULL,
+	    PRIMARY KEY (student_id)
+	); " 
     EOT
   }
 
