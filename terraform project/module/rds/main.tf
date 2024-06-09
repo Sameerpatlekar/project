@@ -48,14 +48,6 @@ resource "aws_db_instance" "mydb" {
   }
 }
 
-resource "aws_db_subnet_group" "mydb_subnet_group" {
-  name       = "mydb-subnet-group"
-  subnet_ids = var.subnet_ids
-
-  tags = {
-    Name = "MyDBSubnetGroup"
-  }
-}
 
 resource "null_resource" "initialize_db" {
   provisioner "local-exec" {
