@@ -10,7 +10,6 @@ variable "db_username" {
 
 variable "db_password" {
   default = "admin123"
-  sensitive = true
 }
 
 variable "db_allocated_storage" {
