@@ -4,7 +4,7 @@ provider "aws" {
   region = var.aws_region
 }
 
-resource "aws_db_instance" "example" {
+resource "aws_db_instance" "rds" {
   identifier          = "free-tier-db-instance"
   allocated_storage    = var.db_allocated_storage
   engine               = "mysql"
@@ -18,8 +18,8 @@ resource "aws_db_instance" "example" {
 }
 
 
-resource "aws_security_group" "example" {
-  name        = "example-sg"
+resource "aws_security_group" "sg" {
+  name        = "rds-sg"
   description = "Allow all inbound traffic"
 
   ingress {
@@ -35,4 +35,14 @@ resource "aws_security_group" "example" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+}
+
+resource "null_resource" "run_sql" {
+  provisioner "local-exec" {
+    command = <<EOT
+      mysql -h ${aws_db_instance.rds.endpoint} -P 3306 -u ${var.db_username} -p${var.db_password} ${var.db_name} < init.sql
+    EOT
+  }
+
+  depends_on = [aws_db_instance.rds]
 }
