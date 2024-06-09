@@ -1,7 +1,7 @@
 # variables.tf
 
 variable "db_name" {
-  default = "database"
+  default = "my-rds-instance"
 }
 
 variable "db_username" {
