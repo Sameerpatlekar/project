@@ -2,6 +2,7 @@
 
 provider "aws" {
   region = var.aws_region
+  
 }
 
 resource "aws_db_instance" "rds" {
@@ -41,7 +42,7 @@ resource "aws_security_group" "sg" {
 resource "null_resource" "run_sql" {
   provisioner "local-exec" {
     command = <<EOT
-      mysql -h ${aws_db_instance.rds.endpoint} -P 3306 -u ${var.db_username} -p${var.db_password} ${var.db_name} < init.sql
+      mysql -h ${aws_db_instance.rds.endpoint} -P 3306 -u ${var.db_username} -p${var.db_password} ${var.db_name} < /home/ec2-user/project/terraform project/module/rds/init.sql
     EOT
   }
 
