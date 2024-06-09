@@ -5,12 +5,11 @@ provider "aws" {
 }
 
 resource "aws_db_instance" "rds" {
-  identifier          = "free-tier-db-instance"
   allocated_storage    = var.db_allocated_storage
   engine               = "mysql"
   engine_version       = "8.0"
   instance_class       = var.db_instance_class
-  db_name                 = var.db_name
+  db_name              = var.db_name
   username             = var.db_username
   password             = var.db_password
   parameter_group_name = "default.mysql8.0"
