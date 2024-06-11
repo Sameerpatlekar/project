@@ -6,6 +6,14 @@ resource "aws_eks_cluster" "main" {
   name     = "my-eks-cluster"
   role_arn = "arn:aws:iam::712340109036:role/eks-cluster"
 
+  vpc_config {
+    subnet_ids = [
+      aws_subnet.main["subnet-07ee43f167f3e612c"].id,
+      aws_subnet.main["subnet-0ccfa04a7628f349a"].id
+    ]
+    security_group_ids = "sg-0855034ebbf977a75"
+  }
+
 }
 
 resource "aws_eks_node_group" "main" {
