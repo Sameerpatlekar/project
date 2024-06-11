@@ -8,8 +8,7 @@ resource "aws_eks_cluster" "main" {
 
   vpc_config {
     subnet_ids = [
-      aws_eks_cluster.main["subnet-07ee43f167f3e612c"].id,
-      aws_eks_cluster.main["subnet-0ccfa04a7628f349a"].id
+      subnet_ids         = [aws_subnet.main[4].id, aws_subnet.main[5].id]
     ]
     security_group_ids = "sg-0855034ebbf977a75"
   }
