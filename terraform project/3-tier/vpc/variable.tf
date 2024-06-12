@@ -3,7 +3,7 @@ variable "aws_region" {
 }
 
 variable "vpc_cidr" {
-  default = "192.168.0.0/24"
+  default = "192.168.0.0/26"
 }
 
 variable "environment" {
@@ -11,11 +11,11 @@ variable "environment" {
 }
 
 variable "public_subnets_cidr" {
-  default = "192.168.1.0/24"
+  default = "192.168.0.16/28"
 }
 
 variable "private_subnets_cidr" {
-  default = "192.168.2.0/24"
+  default = "192.168.0.32/28"
 }
 
 variable "public_availability_zones" {
