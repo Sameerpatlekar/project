@@ -69,7 +69,7 @@ resource "aws_route_table_association" "b" {
 }
 
 resource "aws_eip" "nat" {
-  vpc = true
+  domain = "vpc"
   tags = {
     Name        = "${var.environment}-aws-eip"
     Environment = var.environment
