@@ -1,11 +1,9 @@
 provider "aws" {
-  region = "us-east-1"
+  region = var.aws_region
 }
 
 resource "aws_vpc" "main" {
-
   cidr_block = var.vpc_cidr
-
   tags = {
     Name        = "${var.environment}-vpc"
     Environment = var.environment
@@ -34,29 +32,17 @@ resource "aws_subnet" "private" {
     Name        = "${var.environment}-private-subnet"
     Environment = var.environment
   }
-
-  cidr_block        = "10.0.2.0/24"
-  availability_zone = "us-east-1b"
-  cidr_block        = "10.0.2.0/24"
-  availability_zone = "us-east-1b"
 }
 
 resource "aws_internet_gateway" "gw" {
   vpc_id = aws_vpc.main.id
-
   tags = {
     Name        = "${var.environment}-igw"
     Environment = var.environment
   }
-
+}
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
-
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.gw.id
-  }
-
   tags = {
     Name        = "${var.environment}-public-route-table"
     Environment = var.environment
