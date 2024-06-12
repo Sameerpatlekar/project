@@ -7,7 +7,7 @@ variable "vpc_cidr" {
 }
 
 variable "environment" {
-  default = "production"
+  default = "Networking"
 }
 
 variable "public_subnets_cidr" {

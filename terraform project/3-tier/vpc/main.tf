@@ -67,3 +67,20 @@ resource "aws_route_table_association" "b" {
   subnet_id      = aws_subnet.private.id
   route_table_id = aws_route_table.private.id
 }
+
+resource "aws_eip" "nat" {
+  vpc = true
+  tags = {
+    Name        = "${var.environment}-aws-eip"
+    Environment = var.environment
+  }
+}
+
+resource "aws_nat_gateway" "main" {
+  allocation_id = aws_eip.nat.id
+  subnet_id     = aws_subnet.public.id
+  tags = {
+    Name        = "${var.environment}-nat-gateway"
+    Environment = var.environment
+  }
+}
