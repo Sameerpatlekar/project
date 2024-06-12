@@ -29,7 +29,7 @@ resource "aws_eip" "nat_eip" {
 /* NAT */
 resource "aws_nat_gateway" "nat" {
   allocation_id = "${aws_eip.nat_eip.id}"
-  subnet_id     = "${element(aws_subnet.public_subnet.*.id, 0)}"
+  subnet_id     = "$(aws_subnet.public_subnet.*.id, 0)"
   depends_on    = [aws_internet_gateway.ig]
   tags = {
     Name        = "nat"
@@ -39,8 +39,8 @@ resource "aws_nat_gateway" "nat" {
 /* Public subnet */
 resource "aws_subnet" "public_subnet" {
   vpc_id                  = "${aws_vpc.vpc.id}"
-  cidr_block              = "${element(var.public_subnets_cidr)}"
-  availability_zone       = "${element(var.public_availability_zones)}"
+  cidr_block              = "$(var.public_subnets_cidr)"
+  availability_zone       = "$(var.public_availability_zones)"
   map_public_ip_on_launch = true
   tags = {
     Name        = "${var.environment}-public-subnet"
@@ -50,8 +50,8 @@ resource "aws_subnet" "public_subnet" {
 /* Private subnet */
 resource "aws_subnet" "private_subnet" {
   vpc_id                  = "${aws_vpc.vpc.id}"
-  cidr_block              = "${element(var.private_subnets_cidr)}"
-  availability_zone       = "${element(var.private_availability_zones)}"
+  cidr_block              = "$(var.private_subnets_cidr)"
+  availability_zone       = "$(var.private_availability_zones)"
   map_public_ip_on_launch = false
   tags = {
     Name        = "${var.environment}-private-subnet"
@@ -86,11 +86,11 @@ resource "aws_route" "private_nat_gateway" {
 }
 /* Route table associations */
 resource "aws_route_table_association" "public" {
-  subnet_id      = "${element(aws_subnet.public_subnet.*.id)}"
+  subnet_id      = "$(aws_subnet.public_subnet.*.id)"
   route_table_id = "${aws_route_table.public.id}"
 }
 resource "aws_route_table_association" "private" {
-  subnet_id      = "${element(aws_subnet.private_subnet.*.id)}"
+  subnet_id      = "$(aws_subnet.private_subnet.*.id)"
   route_table_id = "${aws_route_table.private.id}"
 }
 /*==== VPC's Default Security Group ======*/
