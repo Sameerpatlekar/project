@@ -1,136 +1,47 @@
-#awsprovider
 provider "aws" {
-  region     = "${var.aws_region}"
+  region = "us-east-1"
 }
 
-/*==== The VPC ======*/
-resource "aws_vpc" "vpc" {
-  cidr_block           = "${var.vpc_cidr}"
-  enable_dns_hostnames = true
-  enable_dns_support   = true
-  tags = {
-    Name        = "${var.environment}-vpc"
-    Environment = "${var.environment}"
-  }
+resource "aws_vpc" "main" {
+  cidr_block = "10.0.0.0/16"
 }
-/*==== Subnets ======*/
-/* Internet gateway for the public subnet */
-resource "aws_internet_gateway" "ig" {
-  vpc_id = "${aws_vpc.vpc.id}"
-  tags = {
-    Name        = "${var.environment}-igw"
-    Environment = "${var.environment}"
-  }
-}
-/* Elastic IP for NAT */
-resource "aws_eip" "nat_eip" {
-  vpc        = true
-  depends_on = [aws_internet_gateway.ig]
-}
-/* NAT */
-resource "aws_nat_gateway" "nat" {
-  allocation_id = "${aws_eip.nat_eip.id}"
-  subnet_id     = "$(aws_subnet.public_subnet.*.id, 0)"
-  depends_on    = [aws_internet_gateway.ig]
-  tags = {
-    Name        = "nat"
-    Environment = "${var.environment}"
-  }
-}
-/* Public subnet */
-resource "aws_subnet" "public_subnet" {
-  vpc_id                  = "${aws_vpc.vpc.id}"
-  cidr_block              = "$(var.public_subnets_cidr)"
-  availability_zone       = "$(var.public_availability_zones)"
+
+resource "aws_subnet" "public" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.0.1.0/24"
   map_public_ip_on_launch = true
-  tags = {
-    Name        = "${var.environment}-public-subnet"
-    Environment = "${var.environment}"
-  }
+  availability_zone = "us-east-1a"
 }
-/* Private subnet */
-resource "aws_subnet" "private_subnet" {
-  vpc_id                  = "${aws_vpc.vpc.id}"
-  cidr_block              = "$(var.private_subnets_cidr)"
-  availability_zone       = "$(var.private_availability_zones)"
-  map_public_ip_on_launch = false
-  tags = {
-    Name        = "${var.environment}-private-subnet"
-    Environment = "${var.environment}"
-  }
+
+resource "aws_subnet" "private" {
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = "10.0.2.0/24"
+  availability_zone = "us-east-1b"
 }
-/* Routing table for private subnet */
-resource "aws_route_table" "private" {
-  vpc_id = "${aws_vpc.vpc.id}"
-  tags = {
-    Name        = "${var.environment}-private-route-table"
-    Environment = "${var.environment}"
-  }
+
+resource "aws_internet_gateway" "gw" {
+  vpc_id = aws_vpc.main.id
 }
-/* Routing table for public subnet */
+
 resource "aws_route_table" "public" {
-  vpc_id = "${aws_vpc.vpc.id}"
-  tags = {
-    Name        = "${var.environment}-public-route-table"
-    Environment = "${var.environment}"
+  vpc_id = aws_vpc.main.id
+
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.gw.id
   }
 }
-resource "aws_route" "public_internet_gateway" {
-  route_table_id         = "${aws_route_table.public.id}"
-  destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = "${aws_internet_gateway.ig.id}"
+
+resource "aws_route_table_association" "a" {
+  subnet_id      = aws_subnet.public.id
+  route_table_id = aws_route_table.public.id
 }
-resource "aws_route" "private_nat_gateway" {
-  route_table_id         = "${aws_route_table.private.id}"
-  destination_cidr_block = "0.0.0.0/0"
-  nat_gateway_id         = "${aws_nat_gateway.nat.id}"
+
+resource "aws_route_table" "private" {
+  vpc_id = aws_vpc.main.id
 }
-/* Route table associations */
-resource "aws_route_table_association" "public" {
-  subnet_id      = "$(aws_subnet.public_subnet.*.id)"
-  route_table_id = "${aws_route_table.public.id}"
-}
-resource "aws_route_table_association" "private" {
-  subnet_id      = "$(aws_subnet.private_subnet.*.id)"
-  route_table_id = "${aws_route_table.private.id}"
-}
-/*==== VPC's Default Security Group ======*/
-resource "aws_security_group" "default" {
-  name        = "${var.environment}-default-sg"
-  description = "Default security group to allow inbound/outbound from the VPC"
-  vpc_id      = "${aws_vpc.vpc.id}"
-  depends_on  = [aws_vpc.vpc]
-  ingress {
-    from_port = "8080"
-    to_port   = "8080"
-    protocol  = "tcp"
-    self      = true
-  }
-  ingress {
-    from_port = "80"
-    to_port   = "80"
-    protocol  = "http"
-    self      = true
-  }
-  ingress {
-    from_port = "3306"
-    to_port   = "3306"
-    protocol  = "mysql"
-    self      = true
-  }
-  ingress {
-    from_port = "22"
-    to_port   = "22"
-    protocol  = "ssh"
-    self      = true
-  }
-  egress {
-    from_port = "0"
-    to_port   = "0"
-    protocol  = "-1"
-    self      = "true"
-  }
-  tags = {
-    Environment = "${var.environment}"
-  }
+
+resource "aws_route_table_association" "b" {
+  subnet_id      = aws_subnet.private.id
+  route_table_id = aws_route_table.private.id
 }
