@@ -13,6 +13,11 @@ module "vpc" {
   private_availability_zones = "ap-south-1b"
 }
 
+module "sg" {
+  source = "./security_group"
+  vpc_id = module.vpc.vpc_id
+}
+
 module "key" {
   source = "./key-pair"
   key_name = "my-project-key"
@@ -26,4 +31,5 @@ module "ec2" {
   private_subnet_id = module.vpc.private_subnet_id
   environment = "production"
   key_name = module.key.key_name
+  sg_id = module.sg.allow_all.id
 }
