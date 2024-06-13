@@ -4,7 +4,8 @@ resource "aws_instance" "frontend" {
   subnet_id     = var.public_subnet_id  # Assuming the subnet is provided in the VPC
   key_name      = var.key_name
   tags = {
-    Name = "${var.environment}-instance"
+    Name = "frontend-instance"
+    environment = var.environment
   }
 }
 
@@ -14,6 +15,7 @@ resource "aws_instance" "backend" {
   subnet_id     = var.private_subnet_id  # Assuming the subnet is provided in the VPC
   key_name      = var.key_name
   tags = {
-    Name = "${var.environment}-instance"
+    Name = "backend-instance"
+    environment = var.environment
   }
 }
