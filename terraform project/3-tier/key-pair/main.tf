@@ -6,8 +6,6 @@ resource "tls_private_key" "key-pair" {
 resource "aws_key_pair" "generated_key" {
   key_name   = var.key_name
   public_key = tls_private_key.example.public_key_openssh
-  tags={
-    name = "${var.environment}-key-name"
-  }
+  
 }
 
