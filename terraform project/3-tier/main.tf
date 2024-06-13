@@ -15,7 +15,7 @@ module "vpc" {
 
 module "sg" {
   source = "./security_group"
-  vpc_id = module.vpc.aws_vpc.id
+  vpc_id = module.vpc.vpc_id
 }
 
 module "key" {
