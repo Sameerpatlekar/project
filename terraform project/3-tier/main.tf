@@ -31,5 +31,5 @@ module "ec2" {
   private_subnet_id = module.vpc.private_subnet_id
   environment = "production"
   key_name = module.key.key_name
-  sg_id = module.sg.allow_all.id
+  sg_id = module.sg.sg_id
 }
