@@ -1,0 +1,12 @@
+---
+- name: Test Ansible Setup
+  hosts: private
+  tasks:
+    - name: Ping the private instance
+      ping:
+---
+- name: Test Ansible Setup
+  hosts: public
+  tasks:
+    - name: Ping the public instance
+      ping:

@@ -32,3 +32,4 @@ variable "sg_id" {
     description = "security group id "
     type = string
 }
+

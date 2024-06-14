@@ -1,26 +1,20 @@
 provider "aws" {
-  region = "ap-south-1"
+  region = "us-east-2"
 }
 
 module "vpc" {
   source = "./vpc" 
-  aws_region = "ap-south-1"
   vpc_cidr = "192.168.0.0/26"
   environment = "Networking"
   public_subnets_cidr = "192.168.0.16/28"
   private_subnets_cidr = "192.168.0.32/28"
-  public_availability_zones = "ap-south-1a"
-  private_availability_zones = "ap-south-1b"
+  public_availability_zones = "us-east-1a"
+  private_availability_zones = "us-east-1b"
 }
 
 module "sg" {
   source = "./security_group"
   vpc_id = module.vpc.vpc_id
-}
-
-module "key" {
-  source = "./key-pair"
-  key_name = "my-project-key"
 }
 
 module "ec2" {
@@ -32,4 +26,15 @@ module "ec2" {
   environment = "production"
   key_name = module.key.key_name
   sg_id = module.sg.sg_ids
+}
+
+resource "null_resource" "ansible_playbook" {
+  provisioner "local-exec" {
+    command = <<EOT
+      ./generate_inventory.sh
+      ansible-playbook -i inventory.ini playbook.yml
+    EOT
+  }
+
+  depends_on = [aws_instance.frontend, aws_instance.backend]
 }
