@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Extract the outputs from Terraform
-PUBLIC_IP=$(terraform output -raw public_instance_public_ip)
-PRIVATE_IP=$(terraform output -raw private_instance_private_ip)
+PUBLIC_IP=$(terraform output -raw module.ec2.public_instance_public_ip)
+PRIVATE_IP=$(terraform output -raw module.ec2.private_instance_private_ip)
 
 # Create the Ansible inventory file
 cat > inventory.ini <<EOF
