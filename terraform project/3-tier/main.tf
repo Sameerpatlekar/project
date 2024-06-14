@@ -24,7 +24,6 @@ module "ec2" {
   public_subnet_id = module.vpc.public_subnet_id
   private_subnet_id = module.vpc.private_subnet_id
   environment = "production"
-  key_name = module.key.key_name
   sg_id = module.sg.sg_ids
 }
 
@@ -35,5 +34,5 @@ resource "null_resource" "ansible_playbook" {
     EOT
   }
 
-  depends_on = [aws_instance.frontend, aws_instance.backend]
+  
 }
