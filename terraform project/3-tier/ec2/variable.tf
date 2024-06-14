@@ -23,11 +23,6 @@ variable "environment" {
     type = string
 }
 
-variable "key_name" {
-    description = "key name "
-    type = string
-}
-
 variable "sg_id" {
     description = "security group id "
     type = string

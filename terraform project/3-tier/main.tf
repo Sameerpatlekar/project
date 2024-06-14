@@ -19,7 +19,7 @@ module "sg" {
 
 module "ec2" {
   source = "./ec2"
-  ami = "ami-0f58b397bc5c1f2e8"
+  ami = "ami-09040d770ffe2224f"
   instance_type = "t2.micro"
   public_subnet_id = module.vpc.public_subnet_id
   private_subnet_id = module.vpc.private_subnet_id
