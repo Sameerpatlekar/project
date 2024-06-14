@@ -34,6 +34,6 @@ resource "null_resource" "ansible_playbook" {
       ansible-playbook -i inventory.ini playbook.yml
     EOT
   }
-
+depends_on = [aws_instance.frontend, aws_instance.backend]
   
 }
