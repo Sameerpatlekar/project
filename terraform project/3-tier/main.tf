@@ -8,8 +8,8 @@ module "vpc" {
   environment = "Networking"
   public_subnets_cidr = "192.168.0.16/28"
   private_subnets_cidr = "192.168.0.32/28"
-  public_availability_zones = "us-east-1a"
-  private_availability_zones = "us-east-1b"
+  public_availability_zones = "us-east-2a"
+  private_availability_zones = "us-east-2b"
 }
 
 module "sg" {
