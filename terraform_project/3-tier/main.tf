@@ -37,5 +37,5 @@ resource "null_resource" "ansible_playbook" {
 }
 
 output "path" {
-  echo "${path.module}"
+  value = ${path.module}
 }
