@@ -16,7 +16,6 @@ resource "aws_subnet" "public" {
     Name        = "${var.environment}-public-subnet"
     Environment = var.environment
   }
-
 }
 
 resource "aws_subnet" "private" {
@@ -37,6 +36,7 @@ resource "aws_internet_gateway" "gw" {
     Environment = var.environment
   }
 }
+
 resource "aws_route_table" "public" {
   vpc_id = aws_vpc.main.id
   tags = {
@@ -44,6 +44,7 @@ resource "aws_route_table" "public" {
     Environment = var.environment
   }
 }
+
 resource "aws_route_table_association" "a" {
   subnet_id      = aws_subnet.public.id
   route_table_id = aws_route_table.public.id
