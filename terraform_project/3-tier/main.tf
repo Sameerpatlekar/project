@@ -36,6 +36,11 @@ resource "null_resource" "ansible_playbook" {
   }
 }
 
-output "path" {
-  value = path.module
+resource "null_resource-1" "copy_ip" {
+  provisioner "local-exec" {
+    command = <<EOT
+      echo "${public_instance_public_ip} > ip.txt"
+    EOT
+  }
 }
+
