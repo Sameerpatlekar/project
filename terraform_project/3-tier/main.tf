@@ -36,7 +36,7 @@ resource "null_resource" "ansible_playbook" {
   }
 }
 
-resource "null_resource-1" "copy_ip" {
+resource "null_resource" "copy_ip" {
   provisioner "local-exec" {
     command = <<EOT
       echo "${public_instance_public_ip} > ip.txt"
