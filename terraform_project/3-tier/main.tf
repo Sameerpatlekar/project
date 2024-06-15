@@ -34,6 +34,8 @@ resource "null_resource" "ansible_playbook" {
       ansible-playbook -i ${path.module}/inventory.ini ${path.module}/playbook.yml
     EOT
   }
+}
 
-  
+output "path" {
+  echo "${path.module}"
 }
