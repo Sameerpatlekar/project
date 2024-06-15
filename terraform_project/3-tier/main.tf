@@ -30,8 +30,8 @@ module "ec2" {
 resource "null_resource" "ansible_playbook" {
   provisioner "local-exec" {
     command = <<EOT
-      /home/sameer/tp/terraform_project/3-tier/generate_inventory.sh
-      ansible-playbook -i /home/sameer/tp/terraform_project/3-tier/inventory.ini /home/sameer/tp/terraform_project/3-tier/playbook.yml
+      ./generate_inventory.sh
+      ansible-playbook -i inventory.ini playbook.yml
     EOT
   }
 
