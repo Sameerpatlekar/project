@@ -27,7 +27,6 @@ module "ec2" {
   sg_id = module.sg.sg_ids
 }
 
-
 resource "null_resource" "copy_ip" {
   provisioner "local-exec" {
     command = <<EOT
