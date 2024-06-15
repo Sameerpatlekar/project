@@ -27,11 +27,20 @@ module "ec2" {
   sg_id = module.sg.sg_ids
 }
 
-resource "null_resource" "copy_ip" {
+resource "null_resource" "ansible_playbook" {
   provisioner "local-exec" {
     command = <<EOT
-      echo ${module.ec2.public_instance_public_ip} > ip.txt
+      ${path.module}/generate_inventory.sh
+      ansible-playbook -i ${path.module}/inventory.ini ${path.module}/playbook.yml
     EOT
   }
 }
-
+/*
+resource "null_resource" "copy_ip" {
+  provisioner "local-exec" {
+    command = <<EOT
+      "echo ${module.ec2.public_instance_public_ip} > ip.txt"
+    EOT
+  }
+}
+*/
