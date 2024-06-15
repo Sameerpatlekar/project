@@ -13,6 +13,6 @@ public_instance ansible_host=${PUBLIC_IP} ansible_user=ubuntu
 private-instance ansible_host=${PRIVATE_IP} ansible_user=ubuntu 
 
 [private:vars]
-ansible_ssh_common_args='-o ProxyCommand="ssh -W %h:%p -q ubuntu@${PUBLIC_IP} '
+ansible_ssh_common_args='-o ProxyCommand="ssh -W %h:%p -q ubuntu@${PUBLIC_IP}"'
 
 EOF
