@@ -30,8 +30,6 @@ module "ec2" {
 resource "null_resource" "ansible_playbook" {
   provisioner "local-exec" {
     command = <<EOT
-      sed -i 's/\r$//' generate_inventory.sh
-      sed -i 's/\r$//' playbook.yml
       ${path.module}/generate_inventory.sh
       ansible-playbook -i ${path.module}/inventory.ini ${path.module}/playbook.yml
     EOT
