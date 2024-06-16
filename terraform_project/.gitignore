@@ -1,0 +1,5 @@
+3-tier/.terraform.lock.hcl
+3-tier/.terraform/
+3-tier/ip.txt\
+3-tier/terraform.tfstate
+3-tier/terraform.tfstate.backup
