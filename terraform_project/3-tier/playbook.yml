@@ -1,9 +1,6 @@
 ---
 - name: Test Ansible Setup
   hosts: private
-  gather_facts: false
-  vars:
-    ansible_ssh_timeout: 60
   tasks:
     - name: Ping the public instance
       ping:
