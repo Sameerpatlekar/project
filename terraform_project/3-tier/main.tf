@@ -35,3 +35,4 @@ resource "null_resource" "ansible_playbook" {
     EOT
   }
 }
+
