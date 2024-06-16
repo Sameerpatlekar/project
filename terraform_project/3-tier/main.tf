@@ -25,14 +25,32 @@ module "ec2" {
   private_subnet_id = module.vpc.private_subnet_id
   environment = "production"
   sg_id = module.sg.sg_ids
+
+  
 }
 
-resource "null_resource" "ansible_playbook" {
+output "public_instance_public_ip" {
+  value = module.ec2.public_instance_public_ip
+}
+
+output "private_instance_private_ip" {
+  value = module.ec2.private_instance_private_ip
+}
+
+resource "null_resource" "ot" {
   provisioner "local-exec" {
     command = <<EOT
-      ${path.module}/generate_inventory.sh
-      ansible-playbook -i ${path.module}/inventory.ini ${path.module}/playbook.yml
-    EOT
-  }
+      echo $(terraform output -raw public_instance_public_ip) >> ip.txt
+      echo $(terraform output -raw private_instance_private_ip) >> ip.txt
+      EOT
+  }  
 }
 
+resource "null_resource" "scritp_run" {
+  provisioner "local-exec" {
+    command = <<EOT
+      ./script.sh
+    EOT
+  }
+ 
+}

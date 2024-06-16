@@ -1,6 +1,6 @@
 ---
 - name: Test Ansible Setup
-  hosts: public
+  hosts: private
   tasks:
     - name: Ping the public instance
       ping:
