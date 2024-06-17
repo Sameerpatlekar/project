@@ -37,19 +37,10 @@ output "private_instance_private_ip" {
   value = module.ec2.private_instance_private_ip
 }
 
-resource "null_resource" "ip_addresses" {
-  provisioner "local-exec" {
-    command = <<EOT
-      echo $(terraform output -raw public_instance_public_ip) >> ip.txt
-      echo $(terraform output -raw private_instance_private_ip) >> ip.txt
-      EOT
-  }  
-}
-
 resource "null_resource" "script_file" {
   provisioner "local-exec" {
     command = "bash ${path.module}/generate_inventory.sh && ansible-playbook -i inventory.ini playbook.yml"
   }
-  depends_on = [module.vpc , null_resource.ip_addresses]
+  depends_on = [module.vpc]
 }
 
