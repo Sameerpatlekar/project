@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: tomcat
-        image: sameerpatlekar/tomcat-java
+        image: sameerpatlekar/frontend
         ports:
         - containerPort: 8080
         env:
@@ -34,18 +34,7 @@ spec:
             secretKeyRef:
               name: backend-secret
               key: database.password
-        volumeMounts:
-        - name: config-volume
-          mountPath: /usr/local/tomcat/conf/context.xml
-          subPath: context.xml
-      volumes:
-      - name: config-volume
-        configMap:
-          name: my-config
-          items:
-          - key: context.xml
-            path: context.xml
-   
+        
 ---
 
 apiVersion: v1 

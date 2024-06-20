@@ -4,6 +4,13 @@ metadata:
   name: backend-app
 spec: 
   replicas: 1
+  volumes:
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: pvc-mysql
+  volumeMounts:
+    - mountPath: /var/lib/mysql
+      name: mysql-persistent-storage
   selector:
     matchLabels:
       app: backend-app
