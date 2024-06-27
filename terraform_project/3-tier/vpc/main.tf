@@ -77,7 +77,7 @@ resource "aws_route_table" "private" {
 }
 
 resource "aws_route_table_association" "b" {
-  subnet_ids      = ["${aws_subnet.private_a.id}","${aws_subnet.private_b.id}"]
+  subnet_id      = aws_subnet.private_a.id
   route_table_id = aws_route_table.private.id
 }
 
