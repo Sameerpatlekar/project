@@ -52,7 +52,7 @@ resource "aws_db_instance" "rds" {
   storage_type         = var.storage_type   #"gp2"
   engine               = var.engine    #"mysql"
   engine_version       = var.engine_version  #"8.0"
-  instance_class       = vaar.instance_class  #"db.t2.micro"
+  instance_class       = var.instance_class  #"db.t2.micro"
   username             = var.db_username    #"admin"
   password             = var.db_password    #"admin123"  Update with a secure password
   parameter_group_name = aws_db_parameter_group.pg.name #"default.mysql8.0"
