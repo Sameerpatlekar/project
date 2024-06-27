@@ -47,10 +47,7 @@ variable "instance_class" {
   type = string
 }
 
-variable "parameter_group_name" {
-  description = "parameter_group_name"
-  type = string
-}
+
 
 
 
