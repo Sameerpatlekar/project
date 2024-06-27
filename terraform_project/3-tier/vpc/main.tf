@@ -29,7 +29,7 @@ resource "aws_subnet" "private_a" {
   }
 }
 
-resource "aws_subnet_" "private_b" {
+resource "aws_subnet" "private_b" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.private_subnets_2_cidr
   availability_zone = var.private_2_availability_zones
