@@ -10,7 +10,8 @@ module "vpc" {
   private_subnets_1_cidr = "192.168.2.0/24"
   private_subnets_2_cidr = "192.168.3.0/24"
   public_availability_zones = "us-east-2a"
-  private_availability_zones = "us-east-2b"
+  private_1_availability_zones = "us-east-2b"
+  private_2_availability_zones = "us-east-2c"
 }
 
 module "sg" {
