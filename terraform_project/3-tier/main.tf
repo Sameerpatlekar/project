@@ -24,7 +24,8 @@ module "ec2" {
   public_subnet_id = module.vpc.public_subnet_id
   private_subnet_id = module.vpc.private_subnet_id
   environment = "production"
-  sg_id = module.sg.sg_ids
+  sg_id = module.sg.sg_ids 
+}
 
 module "rds" {
   source = "./rds"
@@ -39,8 +40,7 @@ module "rds" {
   subnetid_2 = module.vpc.private_subnet_id
 }
 
-  
-}
+
 output "subnet_id" {
   value = module.vpc.private_subnet_id
 }
