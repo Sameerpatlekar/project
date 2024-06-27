@@ -7,6 +7,7 @@ resource "aws_vpc" "main" {
 }
 
 resource "aws_subnet" "public" {
+  count = 2
   vpc_id                  = aws_vpc.main.id
   cidr_block              = var.public_subnets_cidr
   map_public_ip_on_launch = true
@@ -19,6 +20,7 @@ resource "aws_subnet" "public" {
 }
 
 resource "aws_subnet" "private" {
+  count = 2
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.private_subnets_cidr
   availability_zone = var.private_availability_zones

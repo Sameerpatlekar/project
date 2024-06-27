@@ -26,9 +26,24 @@ module "ec2" {
   environment = "production"
   sg_id = module.sg.sg_ids
 
-  
+module "rds" {
+  source = "./rds"
+  storage = "20"
+  storage_type = "gp2"
+  engine = "mysql"
+  engine_version = "8.0"
+  instance_class = "db.t2.micro"
+  db_username = "admin"
+  db_password = "admin123"
+  subnetid_1 = module.vpc.private_subnet_id
+  subnetid_2 = module.vpc.private_subnet_id
 }
 
+  
+}
+output "subnet_id" {
+  value = module.vpc.private_subnet_id
+}
 output "public_instance_public_ip" {
   value = module.ec2.public_instance_public_ip
 }
