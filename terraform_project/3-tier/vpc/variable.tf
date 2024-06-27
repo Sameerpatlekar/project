@@ -28,7 +28,12 @@ variable "public_availability_zones" {
   type = string
 }
 
-variable "private_availability_zones" {
+variable "private_1_availability_zones" {
+  description = "private subnet availability zone"
+  type = string
+}
+
+variable "private_2_availability_zones" {
   description = "private subnet availability zone"
   type = string
 }

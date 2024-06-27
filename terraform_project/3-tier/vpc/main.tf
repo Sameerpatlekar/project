@@ -22,7 +22,7 @@ resource "aws_subnet" "public" {
 resource "aws_subnet" "private_a" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.private_subnets_1_cidr
-  availability_zone = var.private_availability_zones
+  availability_zone = var.private_1_availability_zones
 
   tags = {
     Name        = "${var.environment}-private-1-subnet"
@@ -33,7 +33,7 @@ resource "aws_subnet" "private_a" {
 resource "aws_subnet_" "private_b" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.private_subnets_2_cidr
-  availability_zone = var.private_availability_zones
+  availability_zone = var.private_2_availability_zones
 
   tags = {
     Name        = "${var.environment}-private-2-subnet"

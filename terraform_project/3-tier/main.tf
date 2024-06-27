@@ -4,10 +4,11 @@ provider "aws" {
 
 module "vpc" {
   source = "./vpc" 
-  vpc_cidr = "192.168.0.0/26"
+  vpc_cidr = "192.168.0.0/16"
   environment = "Networking"
-  public_subnets_cidr = "192.168.0.16/28"
-  private_subnets_cidr = "192.168.0.32/28"
+  public_subnets_cidr = "192.168.1.0/24"
+  private_subnets_1_cidr = "192.168.2.0/24"
+  private_subnets_2_cidr = "192.168.3.0/24"
   public_availability_zones = "us-east-2a"
   private_availability_zones = "us-east-2b"
 }
