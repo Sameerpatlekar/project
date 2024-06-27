@@ -2,6 +2,7 @@
 resource "aws_security_group" "rds_sg" {
   name        = "rds_sg"
   description = "Allow inbound traffic to RDS"
+  vpc_id = var.vpc_id
 
   ingress {
     from_port   = 3306
