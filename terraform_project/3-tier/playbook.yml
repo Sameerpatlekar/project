@@ -1,3 +1,4 @@
+---
 - name: Use Terraform outputs in Ansible
   hosts: private
   tasks:
