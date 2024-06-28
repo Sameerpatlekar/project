@@ -44,13 +44,6 @@ module "rds" {
 }
 
 
-resource "null_resource" "script_file" {
-  provisioner "local-exec" {
-    command = "bash ${path.module}/generate_inventory.sh && ansible-playbook -i inventory.ini playbook.yml"
-  }
-  depends_on = [module.vpc]
-}
-
 resource "null_resource" "rds_access" {
   provisioner "local-exec" {
     command = "ssh -i /home/sameer/.ssh/my-key.pem -L 10000:${module.rds.rds_endpoint} ubuntu@${module.ec2.public_instance_public_ip} -N -f && lsof -i4 -P | grep -i 'listen' | grep 10000 && nc -zv 127.0.0.1 10000 &&  mysql -h localhost -P 10000 -u admin -padmin123 --protocol=TCP "
@@ -65,3 +58,9 @@ resource "null_resource" "output_value" {
   depends_on = [module.rds]
 }
 
+resource "null_resource" "script_file" {
+  provisioner "local-exec" {
+    command = "bash ${path.module}/generate_inventory.sh && ansible-playbook -i inventory.ini playbook.yml"
+  }
+  depends_on = [null_resource.output_value]
+}

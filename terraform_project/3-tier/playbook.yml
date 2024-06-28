@@ -1,5 +1,107 @@
 ---
-- name: to check connection
+- name: Install Tomcat
   hosts: private
+  vars:
+    terraform_outputs: "{{ lookup('file', 'terraform_outputs.json') | from_json }}"
+    rds_endpoint: "{{ terraform_outputs.rds_endpoint.value }}"
+    user: tomcat
+    group: tomcat
+    db_instance_port: 3306
+    db_name: "studentapp"
+    db_user: "admin"
+    db_password: "admin123"
+
   tasks:
-    - ping:
+    - name: Update APT package index
+      apt:
+        update_cache: yes
+    - name: Install MySQL client and Python pip
+      ansible.builtin.apt:
+        name: 
+          - mysql-client
+          - python3-pip
+        state: present
+
+    - name: Create database schema
+      community.mysql.mysql_db:
+        login_host: "{{ rds_endpoint }}"
+        login_port: "{{ db_instance_port }}"
+        login_user: "{{ db_user }}"
+        login_password: "{{ db_password }}"
+        name: "{{ db_name }}"
+        state: present
+    
+    - name: Create table in the database schema
+      mysql_query:
+        login_db: "{{ db_name }}"
+        login_user: "{{ db_user }}"
+        login_password: "{{ db_password }}"
+        login_host: "{{ rds_endpoint }}"
+        query: >
+          CREATE TABLE if not exists students(
+            student_id INT NOT NULL AUTO_INCREMENT,student_name VARCHAR(100) NOT NULL,
+            student_addr VARCHAR(100) NOT NULL,student_age VARCHAR(3) NOT NULL,student_qual VARCHAR(20) NOT NULL,student_percent VARCHAR(10) NOT NULL,student_year_passed VARCHAR(10) NOT NULL,PRIMARY KEY (student_id)
+          );
+    
+    - name: Install OpenJDK 11
+      apt:
+        name: openjdk-11-jdk
+        state: present
+    - name: Create Tomcat group
+      group:
+        name: "{{ group }}"
+
+    - name: Create Tomcat user
+      user:
+        name: "{{ user }}"
+        group: tomcat
+        home: /opt/tomcat
+        shell: /bin/false
+    - name: Download Tomcat
+      get_url:
+        url: "https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.90/bin/apache-tomcat-9.0.90.tar.gz"
+        dest: /opt/tomcat
+    - name: Create Tomcat directory
+      file:
+        path: /opt/tomcat
+        state: directory
+        owner: "{{ user }}"
+        group: "{{ group }}"
+    - name: Extract Tomcat in opt
+      unarchive:
+        src: /opt/tomcat/apache-tomcat-9.0.90.tar.gz
+        dest: /opt/tomcat
+        remote_src: yes
+    - name: Set permissions on Tomcat directory
+      file:
+        path: /opt/tomcat/apache-tomcat-9.0.90
+        state: directory
+        owner: "{{ user }}"
+        group: "{{ group }}"
+        recurse: yes
+    - name: Ensure Tomcat is executable
+      file:
+        path: /opt/tomcat/apache-tomcat-9.0.90/bin/catalina.sh
+        mode: '0755'
+        owner: "{{ user }}"
+        group: "{{ group }}"
+    - name: Download jar file and store in lib
+      get_url:
+        url: "https://s3-us-west-2.amazonaws.com/studentapi-cit/mysql-connector.jar"
+        dest: /opt/tomcat/apache-tomcat-9.0.90/lib
+    - name: Download war file and store in webapps
+      get_url:
+        url: "https://s3-us-west-2.amazonaws.com/studentapi-cit/student.war"
+        dest: /opt/tomcat/apache-tomcat-9.0.90/webapps
+    - name: Add a Resource element for JDBC DataSource
+      blockinfile:
+        path: /opt/tomcat/apache-tomcat-9.0.90/conf/context.xml
+        marker: "<!-- {mark} ANSIBLE MANAGED BLOCK -->"
+        insertafter: "<Context>"
+        block: |
+          <Resource name="jdbc/TestDB" auth="Container" type="javax.sql.DataSource"
+           maxTotal="500" maxIdle="30" maxWaitMillis="1000"
+           username="admin" password="admin123" driverClassName="com.mysql.jdbc.Driver"
+           url="{{ rds_endpoint }}/studentapp"/>
+    - name: Start the script
+      shell: /opt/tomcat/apache-tomcat-9.0.90/bin/catalina.sh start
