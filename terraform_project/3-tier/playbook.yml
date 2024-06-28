@@ -1,6 +1,7 @@
 ---
 - name: Install Tomcat
   hosts: private
+  become: true
   vars:
     terraform_outputs: "{{ lookup('file', 'terraform_outputs.json') | from_json }}"
     rds_endpoint: "{{ terraform_outputs.rds_endpoint.value }}"
