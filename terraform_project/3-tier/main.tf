@@ -46,7 +46,7 @@ module "rds" {
 
 resource "null_resource" "rds_access" {
   provisioner "local-exec" {
-    command = "ssh -i /home/sameer/.ssh/my-key.pem -L 10000:${module.rds.rds_endpoint} ubuntu@${module.ec2.public_instance_public_ip} -N -f && lsof -i4 -P | grep -i 'listen' | grep 10000 && nc -zv 127.0.0.1 10000 &&  mysql -h localhost -P 10000 -u admin -padmin123 --protocol=TCP "
+    command = "ssh -i /home/sameer/.ssh/my-key.pem -L 10001:${module.rds.rds_endpoint} ubuntu@${module.ec2.public_instance_public_ip} -N -f && lsof -i4 -P | grep -i 'listen' | grep 10001 && nc -zv 127.0.0.1 10001 &&  mysql -h localhost -P 10001 -u admin -padmin123 --protocol=TCP "
   }
   depends_on = [module.rds]
 }
