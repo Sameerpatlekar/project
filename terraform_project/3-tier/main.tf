@@ -64,3 +64,10 @@ resource "null_resource" "script_file" {
   }
   depends_on = [null_resource.output_value]
 }
+
+resource "null_resource" "create_db" {
+  provisioner "local-exec" {
+    command = "ansible-playbook create_database.yml"
+  }
+  depends_on = [null_resource.rds_access]
+}
