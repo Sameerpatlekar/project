@@ -14,10 +14,10 @@
         update_cache: yes
     - name: Create database schema
       community.mysql.mysql_db:
-        login_host: "{{ db_instance_endpoint }}"
-        login_port: "{{ db_instance_port }}"
-        login_user: "{{ db_user }}"
-        login_password: "{{ db_password }}"
+        login_host: "{{ db_host }}"
+        login_port: "{{ mysql_port }}"
+        login_user: "{{ mysql_user }}"
+        login_password: "{{ mysql_password }}"
         name: "{{ db_name }}"
         state: present
         login_unix_socket: null
@@ -25,9 +25,9 @@
     - name: Create table in the database schema
       mysql_query:
         login_db: "{{ db_name }}"
-        login_user: "{{ db_user }}"
-        login_password: "{{ db_password }}"
-        login_host: "{{ db_instance_endpoint }}"
+        login_user: "{{ mysql_user }}"
+        login_password: "{{ mysql_password }}"
+        login_host: "{{ db_host }}"
         query: >
           CREATE TABLE if not exists students(
             student_id INT NOT NULL AUTO_INCREMENT,student_name VARCHAR(100) NOT NULL,
