@@ -11,16 +11,23 @@
     db_name: "studentapp"
     db_user: "admin"
     db_password: "admin123"
+    ansible_python_interpreter: /usr/bin/python3
 
   tasks:
     - name: Update APT package index
       apt:
         update_cache: yes
     - name: Install MySQL client and Python pip
-      ansible.builtin.apt:
-        name: 
+      apt:
+        name:
           - mysql-client
           - python3-pip
+        state: present
+        update_cache: yes
+
+    - name: Install MySQL client library for Python 3
+      pip:
+        name: mysqlclient  # You can also use PyMySQL if you prefer
         state: present
 
     - name: Create database schema
