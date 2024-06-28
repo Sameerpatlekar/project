@@ -15,21 +15,30 @@
     
 
   tasks:
-    - name: Update APT package index
+    - name: Update apt package list
       apt:
         update_cache: yes
-    - name: Install MariaDB server and client
+  
+    - name: Ensure python3-venv is installed
       apt:
-        name:
-          - mariadb-server
-          - mariadb-client
+        name: python3-venv
         state: present
-
-    - name: Start and enable MariaDB service
-      systemd:
-        name: mariadb
-        state: started
-        enabled: yes
+  
+    - name: Create Python virtual environment
+      command: python3 -m venv /home/ubuntu/myenv
+      args:
+        creates: /home/ubuntu/myenv
+  
+    - name: Install PyMySQL in virtual environment
+      pip:
+        name: PyMySQL
+        virtualenv: /home/ubuntu/myenv
+  
+    - name: Ensure virtual environment is activated for subsequent tasks
+      shell: |
+        source /home/ubuntu/myenv/bin/activate
+      args:
+        executable: /bin/bash
 
     - name: Create database schema
       community.mysql.mysql_db:
