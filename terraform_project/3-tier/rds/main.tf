@@ -31,7 +31,7 @@ resource "aws_db_subnet_group" "rds_subnet_group" {
 
 resource "aws_db_parameter_group" "pg" {
   name        = "my-db-parameter-group"
-  family      = "mysql8.0"  # Specify the DB engine family (e.g., mysql5.7)
+  family      = "mysql${var.engine_version}"  # Specify the DB engine family (e.g., mysql5.7)
   description = "My custom DB parameter group for MySQL 5.7"
 
   parameter {
