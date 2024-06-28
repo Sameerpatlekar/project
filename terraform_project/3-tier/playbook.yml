@@ -1,5 +1,5 @@
 ---
-- name: Use Terraform outputs in Ansible
+- name: to check connection
   hosts: private
   tasks:
-    ping: 
+    - ping:
