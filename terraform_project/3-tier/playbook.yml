@@ -11,7 +11,7 @@
     db_name: "studentapp"
     db_user: "admin"
     db_password: "admin123"
-    ansible_python_interpreter: /usr/bin/python3.12
+    ansible_python_interpreter: /home/ubuntu/myenv/bin/python3
     
 
   tasks:
