@@ -22,6 +22,7 @@
         name:
           - mysql-client
           - python3-pip
+          - python3-mysql.connector  # Install MySQL client library for Python
         state: present
         update_cache: yes
 
@@ -29,6 +30,7 @@
       pip:
         name: mysqlclient  # You can also use PyMySQL if you prefer
         state: present
+      ignore_errors: true
 
     - name: Create database schema
       community.mysql.mysql_db:
