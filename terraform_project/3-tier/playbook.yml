@@ -17,20 +17,18 @@
     - name: Update APT package index
       apt:
         update_cache: yes
-    - name: Install MySQL client and Python pip
+    - name: Install MariaDB server and client
       apt:
         name:
-          - mysql-client
-          - python3-pip
-          - python3-mysql.connector  # Install MySQL client library for Python
+          - mariadb-server
+          - mariadb-client
         state: present
-        update_cache: yes
 
-    - name: Install MySQL client library for Python 3
-      pip:
-        name: PyMySQL  # You can also use PyMySQL if you prefer
-        state: present
-      ignore_errors: true
+    - name: Start and enable MariaDB service
+      systemd:
+        name: mariadb
+        state: started
+        enabled: yes
 
     - name: Create database schema
       community.mysql.mysql_db:
