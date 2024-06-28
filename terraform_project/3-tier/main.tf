@@ -43,24 +43,6 @@ module "rds" {
   db_password = "admin123"
 }
 
-output "rds_endpoint"{
-  value = module.rds.rds_endpoint
-}
-output "subnet_id_1" {
-  value = module.vpc.private_subnet_id_1
-}
-
-output "subnet_id_2" {
-  value = module.vpc.private_subnet_id_2
-}
-
-output "public_instance_public_ip" {
-  value = module.ec2.public_instance_public_ip
-}
-
-output "private_instance_private_ip" {
-  value = module.ec2.private_instance_private_ip
-}
 
 resource "null_resource" "script_file" {
   provisioner "local-exec" {
@@ -75,3 +57,11 @@ resource "null_resource" "rds_access" {
   }
   depends_on = [module.rds]
 }
+
+resource "null_resource" "output_value" {
+  provisioner "local-exec" {
+    command = "terraform output -json > terraform_outputs.json "
+  }
+  depends_on = [module.rds]
+}
+

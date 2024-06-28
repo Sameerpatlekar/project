@@ -1,7 +1,4 @@
----
-- name: Test Ansible Setup
-  hosts: all
+- name: Use Terraform outputs in Ansible
+  hosts: private
   tasks:
-    - name: Ping the public instance
-      ping:
-
+    ping: 
