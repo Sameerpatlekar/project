@@ -71,7 +71,7 @@ resource "null_resource" "script_file" {
 
 resource "null_resource" "rds_access" {
   provisioner "local-exec" {
-    command = "ssh -L 3336:${module.rds.rds_endpoint}:3306 ubuntu@${module.ec2.public_instance_public_ip} -N -f && lsof -i4 -P | grep -i 'listen' | grep 3336 && nc -zv 127.0.0.1 3336 && mysql -h 127.0.0.1 -P 3336 -u admin -padmin123 "
+    command = "ssh -L 3336:${module.rds.rds_endpoint} ubuntu@${module.ec2.public_instance_public_ip} -N -f && lsof -i4 -P | grep -i 'listen' | grep 3336 && nc -zv 127.0.0.1 3336 && mysql -h 127.0.0.1 -P 3336 -u admin -padmin123 "
   }
   depends_on = [module.rds]
 }
