@@ -28,7 +28,7 @@
 
     - name: Install MySQL client library for Python 3
       pip:
-        name: mysqlclient  # You can also use PyMySQL if you prefer
+        name: PyMySQL  # You can also use PyMySQL if you prefer
         state: present
       ignore_errors: true
 
