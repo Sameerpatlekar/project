@@ -60,14 +60,14 @@ resource "null_resource" "output_value" {
 
 resource "null_resource" "script_file" {
   provisioner "local-exec" {
-    command = "bash ${path.module}/generate_inventory.sh && ansible-playbook -i inventory.ini playbook.yml"
+    command = "bash ${path.module}/generate_inventory.sh && ansible-playbook -i inventory.ini playbook.yml --ask-vault-pass"
   }
-  depends_on = [null_resource.output_value]
+  depends_on = [null_resource.create_db]
 }
 
 resource "null_resource" "create_db" {
   provisioner "local-exec" {
-    command = "ansible-playbook create_database.yml"
+    command = "ansible-playbook -i inventory.ini create_database.yml --ask-vault-pass"
   }
   depends_on = [null_resource.rds_access]
 }

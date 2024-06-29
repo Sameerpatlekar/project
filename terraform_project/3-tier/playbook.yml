@@ -3,18 +3,16 @@
   hosts: private
   become: true
   vars:
-    terraform_outputs: "{{ lookup('file', 'terraform_outputs.json') | from_json }}"
-    rds_endpoint: "{{ terraform_outputs.rds_endpoint.value }}"
     user: tomcat
     group: tomcat
     db_instance_port: 3306
     db_name: "studentapp"
     db_user: "admin"
     db_password: "admin123"
-    ansible_python_interpreter: /home/ubuntu/myenv/bin/python3
-    venv_path: /home/ubuntu/myenv
-    
-
+    terraform_outputs: "{{ lookup('file', 'terraform_outputs.json') | from_json }}"
+    rds_endpoint: "{{ terraform_outputs.rds_endpoint.value }}"
+  vars_files:
+    - vault.yml
   tasks:
     - name: Update apt package list
       apt:
@@ -77,7 +75,7 @@
         block: |
           <Resource name="jdbc/TestDB" auth="Container" type="javax.sql.DataSource"
            maxTotal="500" maxIdle="30" maxWaitMillis="1000"
-           username="admin" password="admin123" driverClassName="com.mysql.jdbc.Driver"
-           url="{{ rds_endpoint }}/studentapp"/>
+           username="admin" password="{{ mysql_password }}" driverClassName="com.mysql.jdbc.Driver"
+           url="jdbc:mysql://{{ rds_endpoint }}:3306/studentapp"/>
     - name: Start the script
       shell: /opt/tomcat/apache-tomcat-9.0.90/bin/catalina.sh start

@@ -10,6 +10,6 @@ cat > inventory.ini <<EOF
 ${PUBLIC_IP} ansible_user=ubuntu ansible_port=22 ansible_ssh_private_key_file=/home/sameer/.ssh/my-key.pem ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 
 [private]
-${PRIVATE_IP} ansible_user=ubuntu ansible_port=22 ansible_ssh_private_key_file=/home/sameer/.ssh/my-key.pem ansible_python_interpreter=/home/ubuntu/myenv/bin/python3 ansible_ssh_common_args='-o ProxyCommand="ssh -W %h:%p -i /home/sameer/.ssh/my-key.pem ubuntu@${PUBLIC_IP}" -o StrictHostKeyChecking=no' 
+${PRIVATE_IP} ansible_user=ubuntu ansible_port=22 ansible_ssh_private_key_file=/home/sameer/.ssh/my-key.pem ansible_python_interpreter=/usr/bin/python3 ansible_ssh_common_args='-o ProxyCommand="ssh -W %h:%p -i /home/sameer/.ssh/my-key.pem ubuntu@${PUBLIC_IP}" -o StrictHostKeyChecking=no' 
 
 EOF
