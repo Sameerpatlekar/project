@@ -47,7 +47,7 @@ resource "null_resource" "output_value" {
   provisioner "local-exec" {
     command = "terraform output -json > terraform_outputs.json "
   }
-  depends_on = [module.rds]
+  depends_on = [module.rds.rds_endpoint]
 }
 
 resource "null_resource" "create_database" {
