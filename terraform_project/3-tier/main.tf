@@ -43,14 +43,6 @@ module "rds" {
   db_password = "admin123"
 }
 
-
-resource "null_resource" "rds_access" {
-  provisioner "local-exec" {
-    command = "ssh -i /home/sameer/.ssh/my-key.pem -L 10002:${module.rds.rds_endpoint} ubuntu@${module.ec2.public_instance_public_ip} -N -f "
-  }
-  depends_on = [module.rds]
-}
-
 resource "null_resource" "output_value" {
   provisioner "local-exec" {
     command = "terraform output -json > terraform_outputs.json "
@@ -58,16 +50,22 @@ resource "null_resource" "output_value" {
   depends_on = [module.rds]
 }
 
+resource "null_resource" "create_database" {
+  provisioner "local-exec" {
+    command = "bash ${path.module}/generate_inventory.sh && ansible-playbook -i inventory.ini create_database.yml --ask-vault-pass"
+  }
+  depends_on = [null_resource.output_value]
+}
 resource "null_resource" "script_file" {
   provisioner "local-exec" {
-    command = "bash ${path.module}/generate_inventory.sh && ansible-playbook -i inventory.ini playbook.yml --ask-vault-pass"
+    command = "ansible-playbook -i inventory.ini playbook.yml --ask-vault-pass"
   }
-  depends_on = [null_resource.create_db]
+  depends_on = [null_resource.create_database]
 }
 
-resource "null_resource" "create_db" {
+resource "null_resource" "nginx_setup" {
   provisioner "local-exec" {
-    command = "ansible-playbook -i inventory.ini create_database.yml --ask-vault-pass"
+    command = "ansible-playbook -i inventory.ini nginx_setup.yml"
   }
-  depends_on = [null_resource.rds_access]
+  depends_on = [null_resource.script_file]
 }

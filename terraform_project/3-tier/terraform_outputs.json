@@ -1,0 +1,27 @@
+{
+  "private_instance_private_ip": {
+    "sensitive": false,
+    "type": "string",
+    "value": "192.168.2.245"
+  },
+  "public_instance_public_ip": {
+    "sensitive": false,
+    "type": "string",
+    "value": "13.59.79.43"
+  },
+  "rds_endpoint": {
+    "sensitive": false,
+    "type": "string",
+    "value": "terraform-20240630093237644200000004.cv0wy4suipf3.us-east-2.rds.amazonaws.com"
+  },
+  "subnet_id_1": {
+    "sensitive": false,
+    "type": "string",
+    "value": "subnet-092bd3e9368b2b829"
+  },
+  "subnet_id_2": {
+    "sensitive": false,
+    "type": "string",
+    "value": "subnet-0890ef341e4d48a47"
+  }
+}
