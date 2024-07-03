@@ -43,11 +43,19 @@ module "rds" {
   db_password = "admin123"
 }
 
+module "alb" {
+  source = "./lb"
+  vpc_id = module.vpc.vpc_id
+  subnetid_1 = module.vpc.private_subnet_id_1
+  subnetid_2 = module.vpc.private_subnet_id_2
+  security_groups = module.sg.sg_ids 
+}
+
 resource "null_resource" "output_value" {
   provisioner "local-exec" {
     command = "terraform output -json > terraform_outputs.json "
   }
-  depends_on = [module.rds.rds_endpoint]
+  depends_on = [module.rds , module.alb]
 }
 
 resource "null_resource" "create_database" {
