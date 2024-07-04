@@ -2,10 +2,7 @@
 - name: Install and configure NGINX as a reverse proxy
   hosts: private
   become: yes
-  vars:
-    terraform_outputs: "{{ lookup('file', 'terraform_outputs.json') | from_json }}"
-    private_ip: "{{ terraform_outputs.private_instance_private_ip.value }}"
-   
+
   tasks:
     - name: Update apt cache
       apt:
