@@ -1,6 +1,6 @@
 ---
 - name: Install Tomcat
-  hosts: bastion
+  hosts: private
   become: true
   vars:
     user: tomcat

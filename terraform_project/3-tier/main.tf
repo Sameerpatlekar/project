@@ -49,13 +49,14 @@ module "alb" {
   subnetid_1 = module.vpc.private_subnet_id_1
   subnetid_2 = module.vpc.private_subnet_id_2
   security_groups = module.sg.sg_ids 
+  intance_id = module.ec2.instance_id_private
 }
 
 resource "null_resource" "output_value" {
   provisioner "local-exec" {
     command = "terraform output -json > terraform_outputs.json "
   }
-  depends_on = [module.rds , module.alb]
+  depends_on = [module.rds.rds_endpoint , module.alb.load_balancer_dns]
 }
 
 resource "null_resource" "create_database" {
@@ -74,6 +75,13 @@ resource "null_resource" "script_file" {
 resource "null_resource" "nginx_setup" {
   provisioner "local-exec" {
     command = "ansible-playbook -i inventory.ini nginx_setup.yml"
+  }
+  depends_on = [null_resource.script_file]
+}
+
+resource "null_resource" "nginx_setup_onprivate" {
+  provisioner "local-exec" {
+    command = "ansible-playbook -i inventory.ini nginx_setup_onprivate.yml"
   }
   depends_on = [null_resource.script_file]
 }

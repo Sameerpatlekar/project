@@ -18,3 +18,8 @@ variable "security_groups" {
   description = "security_groups name"
   type = string
 }
+
+variable "intance_id" {
+  description = "instance id "
+  type = string
+}
