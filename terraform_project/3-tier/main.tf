@@ -43,11 +43,20 @@ module "rds" {
   db_password = "admin123"
 }
 
+module "alb" {
+  source = "./lb"
+  vpc_id = module.vpc.vpc_id
+  subnetid_1 = module.vpc.private_subnet_id_1
+  subnetid_2 = module.vpc.private_subnet_id_2
+  security_groups = module.sg.sg_ids 
+  intance_id = module.ec2.instance_id_private
+}
+
 resource "null_resource" "output_value" {
   provisioner "local-exec" {
     command = "terraform output -json > terraform_outputs.json "
   }
-  depends_on = [module.rds.rds_endpoint]
+  depends_on = [null_resource.nginx_setup_onprivate]
 }
 
 resource "null_resource" "create_database" {
@@ -70,9 +79,17 @@ resource "null_resource" "nginx_setup" {
   depends_on = [null_resource.script_file]
 }
 
+<<<<<<< HEAD
 resource "null_resource" "nginx_setup_1" {
   provisioner "local-exec" {
     command = "ansible-playbook -i inventory.ini nginx_setup_onprivate.yml"
   }
   depends_on = [null_resource.script_file]
+=======
+resource "null_resource" "nginx_setup_onprivate" {
+  provisioner "local-exec" {
+    command = "bash ${path.module}/generate_inventory.sh && ansible-playbook -i inventory.ini nginx_setup_onprivate.yml"
+  }
+  depends_on = [module.rds , module.alb]
+>>>>>>> future_branch
 }
