@@ -56,7 +56,7 @@ resource "null_resource" "output_value" {
   provisioner "local-exec" {
     command = "terraform output -json > terraform_outputs.json "
   }
-  depends_on = [null_resource.nginx_setup_onprivate]
+  depends_on = [module.rds.rds_endpoint , module.alb.load_balancer_dns]
 }
 
 resource "null_resource" "create_database" {
@@ -88,8 +88,12 @@ resource "null_resource" "nginx_setup_1" {
 =======
 resource "null_resource" "nginx_setup_onprivate" {
   provisioner "local-exec" {
-    command = "bash ${path.module}/generate_inventory.sh && ansible-playbook -i inventory.ini nginx_setup_onprivate.yml"
+    command = "ansible-playbook -i inventory.ini nginx_setup_onprivate.yml"
   }
+<<<<<<< HEAD
   depends_on = [module.rds , module.alb]
 >>>>>>> future_branch
+=======
+  depends_on = [null_resource.script_file]
+>>>>>>> parent of 387fed0 (updated)
 }
