@@ -69,3 +69,10 @@ resource "null_resource" "nginx_setup" {
   }
   depends_on = [null_resource.script_file]
 }
+
+resource "null_resource" "nginx_setup_1" {
+  provisioner "local-exec" {
+    command = "ansible-playbook -i inventory.ini nginx_setup_onprivate.yml"
+  }
+  depends_on = [null_resource.script_file]
+}
