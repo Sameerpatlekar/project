@@ -61,10 +61,11 @@ resource "null_resource" "output_value" {
 
 resource "null_resource" "create_database" {
   provisioner "local-exec" {
-    command = "bash ${path.module}/generate_inventory.sh && ansible-playbook -i inventory.ini create_database.yml --ask-vault-pass"
+    command = "ansible-playbook -i inventory.ini create_database.yml --ask-vault-pass"
   }
   depends_on = [null_resource.output_value]
 }
+
 resource "null_resource" "script_file" {
   provisioner "local-exec" {
     command = "ansible-playbook -i inventory.ini playbook.yml --ask-vault-pass"
@@ -79,21 +80,8 @@ resource "null_resource" "nginx_setup" {
   depends_on = [null_resource.script_file]
 }
 
-<<<<<<< HEAD
-resource "null_resource" "nginx_setup_1" {
-  provisioner "local-exec" {
-    command = "ansible-playbook -i inventory.ini nginx_setup_onprivate.yml"
-  }
-  depends_on = [null_resource.script_file]
-=======
 resource "null_resource" "nginx_setup_onprivate" {
   provisioner "local-exec" {
-    command = "ansible-playbook -i inventory.ini nginx_setup_onprivate.yml"
+    command = "bash ${path.module}/generate_inventory.sh && ansible-playbook -i inventory.ini nginx_setup_onprivate.yml"
+     depends_on = [module.rds , module.alb]
   }
-<<<<<<< HEAD
-  depends_on = [module.rds , module.alb]
->>>>>>> future_branch
-=======
-  depends_on = [null_resource.script_file]
->>>>>>> parent of 387fed0 (updated)
-}
