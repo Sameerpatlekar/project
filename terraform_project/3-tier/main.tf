@@ -52,36 +52,47 @@ module "alb" {
   intance_id = module.ec2.instance_id_private
 }
 
+resource "null_resource" "wait_for_rds" {
+  depends_on = [module.rds , module.alb]
+
+  provisioner "local-exec" {
+    command = "sleep 60" # Wait for 60 seconds, adjust as needed
+  }
+}
+
+
 resource "null_resource" "output_value" {
   provisioner "local-exec" {
-    command = "terraform output -json > terraform_outputs.json "
+    command = "bash ${path.module}/generate_inventory.sh && terraform output -json > terraform_outputs.json "
   }
-  depends_on = [module.rds.rds_endpoint , module.alb.load_balancer_dns]
+  depends_on = [null_resource.wait_for_rds ]
 }
 
 resource "null_resource" "create_database" {
   provisioner "local-exec" {
-    command = "ansible-playbook -i inventory.ini create_database.yml --ask-vault-pass"
+    command = "ansible-playbook -i inventory.ini create_database.yml --vault-password-file /home/sameer/vault.pass"
   }
   depends_on = [null_resource.output_value]
 }
 
 resource "null_resource" "script_file" {
   provisioner "local-exec" {
-    command = "ansible-playbook -i inventory.ini playbook.yml --ask-vault-pass"
+    command = "ansible-playbook -i inventory.ini playbook.yml --vault-password-file /home/sameer/vault.pass"
   }
   depends_on = [null_resource.create_database]
+}
+
+resource "null_resource" "nginx_setup_onprivate" {
+  provisioner "local-exec" {
+    command = " ansible-playbook -i inventory.ini nginx_setup_onprivate.yml"
+  }
+  depends_on = [null_resource.script_file]
 }
 
 resource "null_resource" "nginx_setup" {
   provisioner "local-exec" {
     command = "ansible-playbook -i inventory.ini nginx_setup.yml"
   }
-  depends_on = [null_resource.script_file]
+  depends_on = [null_resource.nginx_setup_onprivate]
 }
 
-resource "null_resource" "nginx_setup_onprivate" {
-  provisioner "local-exec" {
-    command = "bash ${path.module}/generate_inventory.sh && ansible-playbook -i inventory.ini nginx_setup_onprivate.yml"
-     depends_on = [module.rds , module.alb]
-  }

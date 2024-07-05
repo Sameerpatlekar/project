@@ -1,6 +1,6 @@
 resource "aws_lb" "app_lb" {
   name               = "app-load-balancer"
-  internal           = false
+  internal           = true
   security_groups    = [var.security_groups]
   subnets            = ["${var.subnetid_1}","${var.subnetid_2}"]  # Change to your subnet IDs
   enable_deletion_protection = false
