@@ -96,3 +96,4 @@ resource "null_resource" "nginx_setup" {
   depends_on = [null_resource.nginx_setup_onprivate]
 }
 
+
