@@ -2,31 +2,31 @@
   "load_balancer_dns": {
     "sensitive": false,
     "type": "string",
-    "value": "internal-app-load-balancer-46999827.us-east-2.elb.amazonaws.com"
+    "value": "internal-app-load-balancer-2133780573.us-east-2.elb.amazonaws.com"
   },
   "private_instance_private_ip": {
     "sensitive": false,
     "type": "string",
-    "value": "192.168.2.31"
+    "value": "192.168.2.55"
   },
   "public_instance_public_ip": {
     "sensitive": false,
     "type": "string",
-    "value": "18.220.5.238"
+    "value": "3.145.73.163"
   },
   "rds_endpoint": {
     "sensitive": false,
     "type": "string",
-    "value": "terraform-20240705103915673900000003.cv0wy4suipf3.us-east-2.rds.amazonaws.com"
+    "value": "terraform-20240705173859803100000003.cv0wy4suipf3.us-east-2.rds.amazonaws.com"
   },
   "subnet_id_1": {
     "sensitive": false,
     "type": "string",
-    "value": "subnet-0d7cb080c4558234e"
+    "value": "subnet-08c74ed9da28f5667"
   },
   "subnet_id_2": {
     "sensitive": false,
     "type": "string",
-    "value": "subnet-05394ca372cfe7f2b"
+    "value": "subnet-0d23cd117dc1291e4"
   }
 }

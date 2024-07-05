@@ -52,8 +52,16 @@ module "alb" {
   intance_id = module.ec2.instance_id_private
 }
 
+module "asg" {
+  source = "./asg"
+  security_groups = module.sg.sg_ids 
+  private_subnet_id_1 = module.vpc.private_subnet_id_1
+  private_subnet_id_2 =  module.vpc.private_subnet_id_2
+  instance_id = module.ec2.instance_id_private
+  target_group_arn = module.alb.target_group_arn
+}
 resource "null_resource" "wait_for_rds" {
-  depends_on = [module.rds , module.alb]
+  depends_on = [module.rds , module.alb , module.asg]
 
   provisioner "local-exec" {
     command = "sleep 60" # Wait for 60 seconds, adjust as needed
