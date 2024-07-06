@@ -2,6 +2,28 @@ provider "aws" {
   region = "us-east-2"
 }
 
+provider "vault" {
+  address = "http://18.220.158.4:8200"
+  skip_child_token = true
+  
+
+  auth_login {
+    path = "auth/approle/login"
+
+    parameters = {
+      role_id = "2b0e9dfd-e539-c511-c4f7-036804a4664f"
+      secret_id = "003ff69a-31f9-bcbc-d83c-d2da8512169c"
+    }
+  }
+  
+}
+
+data "vault_kv_secret_v2" "example" {
+  mount = "kv" // change it according to your mount
+  name  = "data_secret" // change it according to your secret
+  
+}
+
 module "vpc" {
   source = "./vpc" 
   vpc_cidr = "192.168.0.0/16"
@@ -39,8 +61,8 @@ module "rds" {
   engine = "mysql"
   engine_version = "8.0"
   instance_class = "db.t3.micro"
-  db_username = "admin"
-  db_password = "admin123"
+  db_username =  data.vault_kv_secret_v2.example.data["db_username"]   #"admin"
+  db_password =  data.vault_kv_secret_v2.example.data["db_password"]   #"admin123"
 }
 
 module "alb" {
@@ -59,12 +81,13 @@ module "asg" {
   private_subnet_id_2 =  module.vpc.private_subnet_id_2
   instance_id = module.ec2.instance_id_private
   target_group_arn = module.alb.target_group_arn
+  depends_on = [null_resource.nginx_setup]
 }
 resource "null_resource" "wait_for_rds" {
-  depends_on = [module.rds , module.alb , module.asg]
+  depends_on = [module.rds , module.alb]
 
   provisioner "local-exec" {
-    command = "sleep 60" # Wait for 60 seconds, adjust as needed
+    command = "sleep 30" # Wait for 60 seconds, adjust as needed
   }
 }
 
