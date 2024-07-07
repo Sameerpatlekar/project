@@ -1,7 +1,7 @@
 provider "aws" {
   region = "us-east-2"
 }
-
+/*
 provider "vault" {
   address = "http://18.220.158.4:8200"
   skip_child_token = true
@@ -23,7 +23,7 @@ data "vault_kv_secret_v2" "example" {
   name  = "data_secret" // change it according to your secret
   
 }
-
+*/
 module "vpc" {
   source = "./vpc" 
   vpc_cidr = "192.168.0.0/16"
@@ -61,8 +61,8 @@ module "rds" {
   engine = "mysql"
   engine_version = "8.0"
   instance_class = "db.t3.micro"
-  db_username =  data.vault_kv_secret_v2.example.data["db_username"]   #"admin"
-  db_password =  data.vault_kv_secret_v2.example.data["db_password"]   #"admin123"
+  db_username = "admin" #data.vault_kv_secret_v2.example.data["db_username"] 
+  db_password = "admin123" #data.vault_kv_secret_v2.example.data["db_password"]   
 }
 
 module "alb" {
@@ -72,6 +72,7 @@ module "alb" {
   subnetid_2 = module.vpc.private_subnet_id_2
   security_groups = module.sg.sg_ids 
   intance_id = module.ec2.instance_id_private
+  #depends_on = [null_resource.nginx_setup_onprivate]
 }
 
 module "asg" {
@@ -82,6 +83,12 @@ module "asg" {
   instance_id = module.ec2.instance_id_private
   target_group_arn = module.alb.target_group_arn
   depends_on = [null_resource.nginx_setup]
+}
+
+module "CloudWatch" {
+  source = "./cloudwatch"
+  instance_id_private = module.ec2.instance_id_private
+  depends_on = [module.asg]
 }
 resource "null_resource" "wait_for_rds" {
   depends_on = [module.rds , module.alb]
