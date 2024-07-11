@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "us-east-2"
+  region = "eu-west-2"
 }
 /*
 provider "vault" {
@@ -31,9 +31,9 @@ module "vpc" {
   public_subnets_cidr = "192.168.1.0/24"
   private_subnets_1_cidr = "192.168.2.0/24"
   private_subnets_2_cidr = "192.168.3.0/24"
-  public_availability_zones = "us-east-2a"
-  private_1_availability_zones = "us-east-2b"
-  private_2_availability_zones = "us-east-2c"
+  public_availability_zones = "eu-west-2a"
+  private_1_availability_zones = "eu-west-2b"
+  private_2_availability_zones = "eu-west-2c"
 }
 
 module "sg" {
@@ -43,8 +43,9 @@ module "sg" {
 
 module "ec2" {
   source = "./ec2"
-  ami = "ami-09040d770ffe2224f"
+  ami = "ami-07c1b39b7b3d2525d"
   instance_type = "t2.micro"
+  key_name = "public-key"
   public_subnet_id = module.vpc.public_subnet_id
   private_subnet_id = module.vpc.private_subnet_id_1
   environment = "production"
@@ -72,11 +73,11 @@ module "alb" {
   subnetid_2 = module.vpc.private_subnet_id_2
   security_groups = module.sg.sg_ids 
   intance_id = module.ec2.instance_id_private
-  #depends_on = [null_resource.nginx_setup_onprivate]
 }
 
 module "asg" {
   source = "./asg"
+  key_name = "public-key"
   security_groups = module.sg.sg_ids 
   private_subnet_id_1 = module.vpc.private_subnet_id_1
   private_subnet_id_2 =  module.vpc.private_subnet_id_2
@@ -89,9 +90,19 @@ module "CloudWatch" {
   source = "./cloudwatch"
   instance_id_private = module.ec2.instance_id_private
   depends_on = [module.asg]
+  
 }
+
+module "route53"{
+  source = "./route53"
+  instance_ip_of_public = module.ec2.public_instance_public_ip
+  dns_name = "sameer.cloud" 
+  depends_on = [module.ec2]
+}
+
+
 resource "null_resource" "wait_for_rds" {
-  depends_on = [module.rds , module.alb]
+  depends_on = [module.rds]
 
   provisioner "local-exec" {
     command = "sleep 30" # Wait for 60 seconds, adjust as needed

@@ -22,3 +22,8 @@ variable "target_group_arn" {
     type = string
     description = "target group arn"
 }
+
+variable "key_name" {
+  type        = string
+  description = "key name"
+}

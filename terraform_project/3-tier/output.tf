@@ -20,3 +20,11 @@ output "private_instance_private_ip" {
 output "load_balancer_dns" {
   value = module.alb.load_balancer_dns
 }
+
+output "dns_record_name" {
+  value = module.route53.dns_record_name
+}
+
+output "name_servers" {
+  value = module.route53.name_servers
+}

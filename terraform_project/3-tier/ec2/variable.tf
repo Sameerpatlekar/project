@@ -28,3 +28,7 @@ variable "sg_id" {
     type = string
 }
 
+variable "key_name" {
+    description = "key name"
+    type = string
+}

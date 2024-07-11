@@ -8,7 +8,7 @@ resource "aws_launch_template" "custom_temp" {
   name_prefix   = "example-"
   image_id      = aws_ami_from_instance.custom_ami.id # Replace with a valid AMI ID
   instance_type = "t2.micro"
-  key_name      = "my-key"
+  key_name      = "${var.key_name}"
   user_data = base64encode(
               <<-EOF
               #!/bin/bash
