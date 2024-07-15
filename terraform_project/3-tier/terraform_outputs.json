@@ -2,7 +2,7 @@
   "dns_record_name": {
     "sensitive": false,
     "type": "string",
-    "value": ".sameer.cloud"
+    "value": "sameer.cloud"
   },
   "load_balancer_dns": {
     "sensitive": false,
