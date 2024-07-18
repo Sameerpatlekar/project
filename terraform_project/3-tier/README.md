@@ -1,10 +1,7 @@
 **3-tier Infrastructure with Terraform and Ansible**
 
 **Overview**
-This project involves creating a scalable and highly available infrastructure on AWS using Terraform for infrastructure provisioning and
-Ansible for configuration management. The setup includes a VPC with subnets, NAT gateway, internet gateway, EC2 instances, security groups, 
-a load balancer, RDS instance, CloudWatch for monitoring, SNS for notifications, and Route 53 for DNS management. The EC2 instances are configured 
-using Ansible to host a web application with a backend and frontend server setup.
+This project involves creating a scalable and highly available infrastructure on AWS using Terraform for infrastructure provisioning and Ansible for configuration management. The setup includes a VPC with subnets, NAT gateway, internet gateway, EC2 instances, security groups, a load balancer, RDS instance, CloudWatch for monitoring, SNS for notifications, and Route 53 for DNS management. The EC2 instances are configured using Ansible to host a web application with a backend and frontend server setup.
 
 **Prerequisites**
 Before proceeding with the infrastructure setup and configuration, ensure the following prerequisites are met on your local Ubuntu machine:
@@ -55,9 +52,9 @@ Before proceeding with the infrastructure setup and configuration, ensure the fo
       o Set up CloudWatch for monitoring and SNS for notifications.
     
 **3. Route 53:**
-    o Create a Route 53 hosted zone.
-    o Add a new A record with a simple routing policy.
-    o Create a health check for the DNS.
+      o Create a Route 53 hosted zone.
+      o Add a new A record with a simple routing policy.
+      o Create a health check for the DNS.
     
 **Configuration Management**
 
