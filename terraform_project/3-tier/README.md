@@ -27,12 +27,9 @@ Before proceeding with the infrastructure setup and configuration, ensure the fo
 
       
 **Three-Tier Architecture**
-      • **Presentation Tier**: Managed by the frontend server (NGINX) 
-      which handles user interaction.
-      • **Application Tier**: Managed by the backend server (Apache) 
-      which handles business logic.
-      •**Data Tier**: Managed by the RDS instance which handles data 
-      storage and management.
+      • **Presentation Tier**: Managed by the frontend server (NGINX) which handles user interaction.
+      • **Application Tier**: Managed by the backend server (Apache) which handles business logic.
+      •**Data Tier**: Managed by the RDS instance which handles data storage and management.
 
       
 **Infrastructure Setup with Terraform**
@@ -63,13 +60,12 @@ Before proceeding with the infrastructure setup and configuration, ensure the fo
     o Create a health check for the DNS.
     
 **Configuration Management**
-       Shell script :
-          o I wrote a shell script to create an inventory file with the IP 
-          addresses of the running instances.
-          o I saved the terraform output in Json format and then I used 
-          that output from variable in Ansible playbook.
+
+Shell script :
+    o I wrote a shell script to create an inventory file with the IP addresses of the running instances.
+    o I saved the terraform output in Json format and then I used that output from variable in Ansible playbook.
       
-      Ansible:
+Ansible:
       1. Private and Public Instances Configuration:
             o Use Ansible to install Apache on the backend server (private instance).
             o Store the WAR file of the application in the webappsfolder and the sql-connector.jar file in the lib folder.
